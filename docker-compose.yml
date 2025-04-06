@@ -1,0 +1,19 @@
+services:
+  falcon-rabbitmq:
+    image: rabbitmq:management
+    container_name: falcon-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: falcon
+      RABBITMQ_DEFAULT_PASS: falcon
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+    name: app-network
+volumes:
+  back-data:

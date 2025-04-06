@@ -1,0 +1,34 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+RABBITMQ_URI = os.getenv("FALCON_RABBITMQ_URI")
+if not RABBITMQ_URI:
+    raise ValueError("Environment variable 'FALCON_RABBITMQ_URI' is not set.")
+
+# === Queue Names ===
+QUEUE_FALCON_AUDIO          = "QUEUE_FALCON_AUDIO"
+QUEUE_FALCON_SCREEN         = "QUEUE_FALCON_SCREEN"
+QUEUE_FALCON_DESCRIBE       = "QUEUE_FALCON_DESCRIBE"
+QUEUE_FALCON_ASK            = "QUEUE_FALCON_ASK"
+QUEUE_FALCON_TO_SPEECH      = "QUEUE_FALCON_TO_SPEECH"
+QUEUE_FALCON_MISTER_M       = "QUEUE_FALCON_MISTER_M"
+
+# === Event Identifiers ===
+PRINT_SCREEN   = "PRINT_SCREEN"
+START_RECORD   = "START_RECORD"
+STOP_RECORD    = "STOP_RECORD"
+
+__all__ = [
+    "RABBITMQ_URI",
+    "QUEUE_FALCON_AUDIO",
+    "QUEUE_FALCON_SCREEN",
+    "QUEUE_FALCON_DESCRIBE",
+    "QUEUE_FALCON_ASK",
+    "QUEUE_FALCON_TO_SPEECH",
+    "QUEUE_FALCON_MISTER_M",
+    "PRINT_SCREEN",
+    "START_RECORD",
+    "STOP_RECORD",
+]
