@@ -1,8 +1,3 @@
-Canvas # 🌌 Projeto Falcon – Agentes Inteligentes em Python
-
-Um conjunto de agentes independentes que se comunicam via RabbitMQ e utilizam OpenAI para executar tarefas como capturar tela, gravar áudio, descrever imagens, transcrever fala e processar prompts de texto.
-
----
 
 ## 🎥 Inspiração
 
@@ -15,6 +10,12 @@ Lucas Montano comenta sobre um aplicativo criado por um desenvolvedor chamado Ro
 ---
 https://www.youtube.com/watch?v=O_kcf7R7ZqE&t=497s
 
+
+Canvas # 🌌 Projeto Falcon – Agentes Inteligentes em Python
+
+Um conjunto de agentes independentes que se comunicam via RabbitMQ e utilizam OpenAI para executar tarefas como capturar tela, gravar áudio, descrever imagens, transcrever fala e processar prompts de texto.
+
+---
 ## 🧰 Pré-requisitos
 
 - Python **3.8+**
@@ -226,12 +227,17 @@ falcon-agents/
 
 ---
 
-🧠 Considerações
-Este material foi desenvolvido exclusivamente para fins educacionais. É importante lembrar que o uso inadequado de ferramentas de inteligência artificial pode trazer impactos negativos, especialmente para profissionais da área de tecnologia. Por isso, recomendamos que seja utilizado com responsabilidade e consciência.
+### 🧠 Considerações
 
-Se este projeto foi útil ou te inspirou de alguma forma, considere apoiar o desenvolvedor com uma doação via PIX. Seu apoio é essencial para manter o projeto ativo, em constante evolução e acessível para mais pessoas.
+Este material foi desenvolvido exclusivamente para fins educacionais. O uso inadequado de ferramentas de inteligência artificial pode gerar consequências negativas, especialmente para profissionais da área de tecnologia. Utilize com responsabilidade e consciência.
 
-Todo o conteúdo foi criado com o auxílio de inteligência artificial, demonstrando na prática como essa tecnologia pode acelerar o desenvolvimento de ideias e MVPs.
+
+> ⚠️ **Atenção**: para que a janela do assistente permaneça oculta durante o uso, é necessário compartilhar apenas a janela específica do navegador ou aplicativo. O modo de compartilhamento de tela completa pode revelar a interface do assistente ao entrevistador.
+
+Se este projeto foi útil ou te inspirou de alguma forma, considere apoiar o desenvolvedor com uma doação via PIX. Seu apoio é essencial para manter o projeto ativo, evoluindo e acessível para mais pessoas.
+
+Todo este conteúdo foi criado com o auxílio de inteligência artificial, demonstrando como essa tecnologia pode acelerar o desenvolvimento de ideias e MVPs.
+
 
 
 <img src="img/pix.png" alt="Chave PIX" width="300" />
