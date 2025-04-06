@@ -226,9 +226,13 @@ falcon-agents/
 
 ---
 
-## 🧠 Doações
+🧠 Considerações
+Este material foi desenvolvido exclusivamente para fins educacionais. É importante lembrar que o uso inadequado de ferramentas de inteligência artificial pode trazer impactos negativos, especialmente para profissionais da área de tecnologia. Por isso, recomendamos que seja utilizado com responsabilidade e consciência.
 
-Se este projeto te ajudou ou inspirou de alguma forma, considere apoiar o desenvolvedor com uma doação via PIX. Sua contribuição ajuda a manter o projeto vivo e em constante evolução!
+Se este projeto foi útil ou te inspirou de alguma forma, considere apoiar o desenvolvedor com uma doação via PIX. Seu apoio é essencial para manter o projeto ativo, em constante evolução e acessível para mais pessoas.
+
+Todo o conteúdo foi criado com o auxílio de inteligência artificial, demonstrando na prática como essa tecnologia pode acelerar o desenvolvimento de ideias e MVPs.
+
 
 <img src="img/pix.png" alt="Chave PIX" width="300" />
 
