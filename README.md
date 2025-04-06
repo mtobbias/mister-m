@@ -6,7 +6,7 @@ Um conjunto de agentes independentes que se comunicam via RabbitMQ e utilizam Op
 
 ## 🎥 Inspiração
 
-<img src="youtube.jpeg" alt="Thumb do vídeo do Lucas Montano" width="100%" />
+<img src="img/youtube.jpeg" alt="Thumb do vídeo do Lucas Montano" width="100%" />
 
 **Resumo curto sobre o tema principal do vídeo:**
 
@@ -19,11 +19,18 @@ https://www.youtube.com/watch?v=O_kcf7R7ZqE&t=497s
 
 Se este projeto te ajudou ou inspirou de alguma forma, considere apoiar o desenvolvedor com uma doação via PIX. Sua contribuição ajuda a manter o projeto vivo e em constante evolução!
 
-<img src="pix.png" alt="Chave PIX" width="300" />
+<img src="img/pix.png" alt="Chave PIX" width="300" />
 
 Chave PIX: **marcelo.tobbias@gmail.com**
 
+ou
+
+### https://buy.stripe.com/test_14k9DZ7jxcZucPS9AA
+
+
+
 ---
+
 
 ## 🧰 Pré-requisitos
 
@@ -81,9 +88,13 @@ python3 start.py
 
 ## 🤖 Agentes Disponíveis
 
+---
+<img src="img/img.png" alt="Thumb do vídeo do Lucas Montano" width="100%" />
+
 ### 📸 Luke Agent
 
 Captura screenshots ao receber comandos da fila `QUEUE_FALCON_SCREEN`.
+<img src="img/img_1.png" alt="Thumb do vídeo do Lucas Montano" width="100%" />
 
 ```bash
 python3 luke.py
@@ -94,6 +105,8 @@ python3 luke.py
 ### 🎿 Leia Agent
 
 Grava áudio a partir de comandos recebidos em `QUEUE_FALCON_AUDIO`.
+
+<img src="img/img_2.png" alt="Thumb do vídeo do Lucas Montano" width="100%" />
 
 - `START_RECORD` → Inicia gravação
 - `STOP_RECORD` → Finaliza e envia o caminho do MP3
