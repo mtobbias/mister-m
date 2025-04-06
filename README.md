@@ -15,23 +15,6 @@ Lucas Montano comenta sobre um aplicativo criado por um desenvolvedor chamado Ro
 ---
 https://www.youtube.com/watch?v=O_kcf7R7ZqE&t=497s
 
-## 🧠 Doações
-
-Se este projeto te ajudou ou inspirou de alguma forma, considere apoiar o desenvolvedor com uma doação via PIX. Sua contribuição ajuda a manter o projeto vivo e em constante evolução!
-
-<img src="img/pix.png" alt="Chave PIX" width="300" />
-
-Chave PIX: **marcelo.tobbias@gmail.com**
-
-ou
-
-### https://buy.stripe.com/test_14k9DZ7jxcZucPS9AA
-
-
-
----
-
-
 ## 🧰 Pré-requisitos
 
 - Python **3.8+**
@@ -240,6 +223,20 @@ falcon-agents/
 ├── requirements.txt
 └── x-wing/  # Interface Electron
 ```
+
+---
+
+## 🧠 Doações
+
+Se este projeto te ajudou ou inspirou de alguma forma, considere apoiar o desenvolvedor com uma doação via PIX. Sua contribuição ajuda a manter o projeto vivo e em constante evolução!
+
+<img src="img/pix.png" alt="Chave PIX" width="300" />
+
+Chave PIX: **marcelo.tobbias@gmail.com**
+
+ou
+
+### https://buy.stripe.com/test_14k9DZ7jxcZucPS9AA
 
 ## 👥 Contato e Repositório
 
