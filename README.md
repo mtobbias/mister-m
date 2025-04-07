@@ -72,84 +72,97 @@ python3 start.py
 
 ## 🤖 Agentes Disponíveis
 
----
 <img src="img/img.png" alt="Thumb do vídeo do Lucas Montano" width="100%" />
 
-### 📸 Luke Agent
+___
 
-Captura screenshots ao receber comandos da fila `QUEUE_FALCON_SCREEN`.
-<img src="img/img_1.png" alt="Thumb do vídeo do Lucas Montano" width="100%" />
+>### 001-Han Solo Agent
 
-```bash
-python3 luke.py
-```
+<img src="img/han_solo.png"/>
 
----
-
-### 🎿 Leia Agent
-
-Grava áudio a partir de comandos recebidos em `QUEUE_FALCON_AUDIO`.
-
-<img src="img/img_2.png" alt="Thumb do vídeo do Lucas Montano" width="100%" />
-
-- `START_RECORD` → Inicia gravação
-- `STOP_RECORD` → Finaliza e envia o caminho do MP3
-
-```bash
-python3 leia.py
-```
-
----
-
-### 🧙 Obi-Wan Agent
-
-Transcreve arquivos de áudio (.mp3) usando o modelo **Whisper** da OpenAI.
-
-- Escuta `QUEUE_FALCON_TO_SPEECH`
-- Resposta vai para `QUEUE_FALCON_MISTER_M`
-
-```bash
-python3 obi_wan.py
-```
-
----
-
-### 🧐 Yoda Agent
-
-Recebe prompts de texto pela fila `QUEUE_FALCON_ASK` e responde com o modelo **GPT-4o**.
-
-- Resultado enviado para `QUEUE_FALCON_MISTER_M`
-
-```bash
-python3 yoda.py
-```
-
----
-
-### 🤖 C-3PO Agent
-
-Recebe o caminho de uma imagem pela fila `QUEUE_FALCON_DESCRIBE` e envia uma descrição para `QUEUE_FALCON_ASK`.
-
-```bash
-python3 c3po.py
-```
-
----
-
-### 🎷 Han Solo Agent
-
-Acompanha o teclado e envia comandos com atalhos:
+Escuta o teclado, Envia eventos para fila rabbitMQ:
 
 - `Ctrl + Alt + M` → Screenshot
 - `Ctrl + Alt + S` → Iniciar gravação de áudio
 - `Ctrl + Alt + R` → Parar gravação de áudio
 
 ```bash
+
 python3 han_solo.py
+
+```
+___
+
+>### 002-Luke Agent
+
+<img src="img/han_solo.png"/>
+
+Captura screenshots envia para fila `QUEUE_FALCON_DESCRIBE` (C3Po).
+
+```bash
+
+python3 luke.py
+
+```
+___
+
+>### 003-C-3PO Agent
+
+<img src="img/c3po.png"/>
+
+Recebe o caminho de uma imagem pela fila `QUEUE_FALCON_DESCRIBE` descreve a imagem e envia a descrição da imagem para `QUEUE_FALCON_ASK`.
+
+
+```bash
+
+python3 c3po.py
+
+```
+___
+
+>### 004-Yoda Agent
+
+<img src="img/yoda.png"/>
+
+Recebe prompts de texto pela fila `QUEUE_FALCON_ASK` e responde com o modelo **GPT-4o**.
+
+- Resultado enviado para `QUEUE_FALCON_X_WING`
+
+```bash
+
+python3 yoda.py
+
 ```
 
----
+___
 
+>### 005-Leia
+
+<img src="img/leia.png"/>
+
+Grava áudio a partir de comandos recebidos em `QUEUE_FALCON_AUDIO`.
+
+```bash
+
+python3 leia.py
+
+```
+___
+
+>### 006-Obi Wab
+
+<img src="img/obiwan.png"/>
+
+Transcreve arquivos de áudio (.mp3) usando o modelo **Whisper** da OpenAI.
+
+- Escuta `QUEUE_FALCON_TO_SPEECH`
+- Resposta vai para `QUEUE_FALCON_X_WING`
+
+```bash
+
+python3 obi_wan.py
+
+```
 ### 🚗 X-Wing Agent (Interface em Electron)
 
 **X-Wing** é a interface visual da frota Falcon. Um app leve em Electron que permite ao usuário:

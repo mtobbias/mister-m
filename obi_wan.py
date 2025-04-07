@@ -7,7 +7,7 @@ from openai import OpenAI
 from consts import (
     RABBITMQ_URI,
     QUEUE_FALCON_TO_SPEECH,
-    QUEUE_FALCON_MISTER_M
+   QUEUE_FALCON_X_WING
 )
 
 APP_NAME = "obi_wan.py"
@@ -78,7 +78,7 @@ def on_message(ch, method, properties, body):
     transcription = transcribe_audio(file_path)
     if transcription:
         print(f"\n🗣️ Transcription:\n{transcription}\n")
-        send_to_queue(QUEUE_FALCON_MISTER_M, transcription)
+        send_to_queue(QUEUE_FALCON_X_WING, transcription)
 
 def listen_for_commands():
     print(BANNER)

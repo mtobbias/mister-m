@@ -5,7 +5,7 @@ import pika
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from consts import RABBITMQ_URI, QUEUE_FALCON_ASK, QUEUE_FALCON_MISTER_M
+from consts import RABBITMQ_URI, QUEUE_FALCON_ASK, QUEUE_FALCON_X_WING
 
 APP_NAME = "yoda.py"
 __version__ = "1.0"
@@ -70,7 +70,7 @@ def on_message(ch, method, properties, body):
     logging.info(f"{APP_NAME}: Received prompt: {prompt}")
     result = process_text_with_gpt(prompt)
     if result:
-        send_to_queue(QUEUE_FALCON_MISTER_M, result)
+        send_to_queue(QUEUE_FALCON_X_WING, result)
 
 
 def listen_for_commands():

@@ -10,7 +10,6 @@ from consts import (
 
 APP_NAME = "han_solo.py"
 __version__ = "1.0"
-__author__ = "Operative X"
 
 # Logging Configuration
 logging.basicConfig(

@@ -8,7 +8,7 @@ dotenv.config();
 let mainWindow: BrowserWindow | null = null;
 
 const APP_NAME = 'x-wing';
-const QUEUE_FALCON_MISTER_M = 'QUEUE_FALCON_MISTER_M';
+const QUEUE_FALCON_X_WING= 'QUEUE_FALCON_X_WING';
 const QUEUE_FALCON_AUDIO = 'QUEUE_FALCON_AUDIO';
 const QUEUE_FALCON_ASK = 'QUEUE_FALCON_ASK';
 const QUEUE_FALCON_SCREEN = 'QUEUE_FALCON_SCREEN';
@@ -27,10 +27,10 @@ async function startRabbitMQListener(): Promise<void> {
     try {
         const connection = await amqp.connect(RABBITMQ_URI);
         const channel = await connection.createChannel();
-        await channel.assertQueue(QUEUE_FALCON_MISTER_M, {durable: true});
-        console.log(`[${APP_NAME}] 🎧 Listening on queue: ${QUEUE_FALCON_MISTER_M}`);
+        await channel.assertQueue(QUEUE_FALCON_X_WING, {durable: true});
+        console.log(`[${APP_NAME}] 🎧 Listening on queue: ${QUEUE_FALCON_X_WING}`);
 
-        channel.consume(QUEUE_FALCON_MISTER_M, (msg) => {
+        channel.consume(QUEUE_FALCON_X_WING, (msg) => {
             if (msg !== null) {
                 const messageContent = msg.content.toString();
                 console.log(`[${APP_NAME}] 📩 Message received: ${messageContent}`);
