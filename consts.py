@@ -1,17 +1,25 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)
 
-RABBITMQ_URI = os.getenv("FALCON_RABBITMQ_URI")
+RABBITMQ_URI = os.getenv("RABBITMQ_URI")
 if not RABBITMQ_URI:
-    raise ValueError("Environment variable 'FALCON_RABBITMQ_URI' is not set.")
+    raise ValueError("Environment variable 'RABBITMQ_URI' is not set.")
+
+
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gpt").lower()
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+
 
 # === Queue Names ===
 QUEUE_FALCON_AUDIO          = "QUEUE_FALCON_AUDIO"
 QUEUE_FALCON_SCREEN         = "QUEUE_FALCON_SCREEN"
 QUEUE_FALCON_DESCRIBE       = "QUEUE_FALCON_DESCRIBE"
 QUEUE_FALCON_ASK            = "QUEUE_FALCON_ASK"
+QUEUE_FALCON_ASK_AUDIO      = "QUEUE_FALCON_ASK"
 QUEUE_FALCON_TO_SPEECH      = "QUEUE_FALCON_TO_SPEECH"
 QUEUE_FALCON_X_WING       = "QUEUE_FALCON_X_WING"
 QUEUE_FALCON_X_WING_AUDIO       = "QUEUE_FALCON_X_WING_AUDIO"

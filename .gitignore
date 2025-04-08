@@ -367,3 +367,4 @@ venv
 x-wing/.env
 x-wing/node_modules
 x-wing/dist
+ollama/root

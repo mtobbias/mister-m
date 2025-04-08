@@ -290,6 +290,17 @@
         }
     }
     setInterval(monitorClipboard, 1000);
+    const textarea = document.getElementById('userInput');
+    textarea.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            const text = textarea.value.trim();
+            if (text) {
+                window.electronAPI.sendUserText(text);
+                textarea.value = '';
+            }
+        }
+    });
 </script>
 </body>
 </html>

@@ -30,7 +30,7 @@ async function startRabbitMQListener(): Promise<void> {
     try {
         const connection = await amqp.connect(RABBITMQ_URI);
         const channel = await connection.createChannel();
-        await channel.assertQueue(QUEUE_FALCON_X_WING, { durable: true });
+        await assertAllQueues(channel);
         console.log(`[${APP_NAME}] 🎧 Listening on queue: ${QUEUE_FALCON_X_WING}`);
 
         channel.consume(QUEUE_FALCON_X_WING, (msg) => {
@@ -57,6 +57,21 @@ async function startRabbitMQListener(): Promise<void> {
         console.error(`[${APP_NAME}] ❌ Failed to connect to RabbitMQ:`, error);
     }
 }
+
+const assertAllQueues = async (channel: amqp.Channel) => {
+    const queues = [
+        QUEUE_FALCON_X_WING,
+        QUEUE_FALCON_X_WING_AUDIO,
+        QUEUE_FALCON_AUDIO,
+        QUEUE_FALCON_ASK,
+        QUEUE_FALCON_SCREEN,
+    ];
+
+    for (const queue of queues) {
+        await channel.assertQueue(queue, { durable: true });
+        console.log(`[${APP_NAME}] ✅ Queue asserted: ${queue}`);
+    }
+};
 
 function createMainWindow(): void {
     const { width: screenWidth } = screen.getPrimaryDisplay().workAreaSize;
@@ -98,15 +113,21 @@ function createMainWindow(): void {
 
 function createAudioWindow(): void {
     const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
+
+    const windowWidth = (screenWidth/2)+100;
+    const windowHeight = 140;
+
     audioWindow = new BrowserWindow({
-        width: screenWidth,
-        height: 200,
-        x: 0,
-        y: screenHeight,
+        width: windowWidth,
+        height: windowHeight,
+        x: (screenWidth - windowWidth) / 2,
+        y: screenHeight - windowHeight,
         alwaysOnTop: true,
         frame: false,
         skipTaskbar: true,
         transparent: true,
+        resizable: false,
+        movable: true,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             allowDisplayingInsecureContent: false,
@@ -127,7 +148,7 @@ function createAudioWindow(): void {
 
     audioWindow.once('ready-to-show', () => {
         audioWindow?.show();
-        console.log(`[${APP_NAME}] 🔊 Audio overlay ready.`);
+        console.log(`[${APP_NAME}] 🔊 Audio overlay ready (bottom, 50% width).`);
     });
 }
 
@@ -158,8 +179,7 @@ app.whenReady().then(() => {
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
             createAudioWindow();
-           createMainWindow();
-            
+            createMainWindow();
         }
     });
 });

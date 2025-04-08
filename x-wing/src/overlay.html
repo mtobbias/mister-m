@@ -1,79 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Audio Overlay</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <style>
-        :root {
-            --bg: rgba(30, 30, 30, 0.85);
-            --text: #ffffff;
-            --accent: #10a37f;
-            --recording: #e74c3c;
-        }
+  <meta charset="UTF-8">
+  <title>Audio Overlay</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    :root {
+      --bg: rgba(25, 25, 25, 0.9);
+      --text: #ffffff;
+      --recording: #e74c3c;
+      --scrollbar-bg: rgba(255, 255, 255, 0.05);
+      --scrollbar-thumb: rgba(255, 255, 255, 0.3);
+    }
 
-        body {
-            margin: 0;
-            padding: 0;
-            background: transparent;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: var(--text);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
 
-        .overlay-container {
-            background: var(--bg);
-            padding: 12px 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-        }
+    .overlay-container {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      width: 92vw;
+      height: 92vh;
+      -webkit-app-region: drag;
+    }
 
-        .pulse {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--recording);
-            animation: pulseAnim 1.2s ease-in-out infinite;
-        }
+    .pulse {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--recording);
+      animation: pulseAnim 1.3s ease-in-out infinite;
+      -webkit-app-region: no-drag;
+      margin-top: 4px;
+    }
 
-        @keyframes pulseAnim {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.6); opacity: 0.6; }
-            100% { transform: scale(1); opacity: 1; }
-        }
+    @keyframes pulseAnim {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.6; }
+      100% { transform: scale(1); opacity: 1; }
+    }
 
-        .text {
-            font-size: 15px;
-            white-space: nowrap;
-        }
-    </style>
+    .text {
+      font-size: 15px;
+      line-height: 1.4;
+      color: var(--text);
+      overflow-y: auto;
+      max-height: 100%;
+      flex: 1;
+      white-space: pre-wrap;
+      word-break: break-word;
+      -webkit-app-region: no-drag;
+
+      /* Scrollbar custom estilo ChatGPT */
+      scrollbar-width: thin;
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg);
+    }
+
+    .text::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .text::-webkit-scrollbar-track {
+      background: var(--scrollbar-bg);
+    }
+
+    .text::-webkit-scrollbar-thumb {
+      background-color: var(--scrollbar-thumb);
+      border-radius: 10px;
+      border: 2px solid transparent;
+      background-clip: content-box;
+    }
+  </style>
 </head>
 <body>
-    <div class="overlay-container">
-        <div id="pulse-indicator" class="pulse" style="display: none;"></div>
-        <div class="text" id="audio-text">Aguardando...</div>
-    </div>
+  <div class="overlay-container">
+    <div id="pulse-indicator" class="pulse" style="display: none;"></div>
+    <div class="text" id="audio-text">Aguardando áudio...</div>
+  </div>
 
-    <script>
-        const textElement = document.getElementById('audio-text');
-        const pulseIndicator = document.getElementById('pulse-indicator');
+  <script>
+    const textElement = document.getElementById('audio-text');
+    const pulseIndicator = document.getElementById('pulse-indicator');
 
-        window.electronAPI.onNewMessageAudio((message) => {
-            textElement.textContent = message;
+    window.electronAPI.onNewMessageAudio((message) => {
+      textElement.textContent = message;
 
-            if (message.toLowerCase().includes('gravando') || message.toLowerCase().includes('record')) {
-                pulseIndicator.style.display = 'inline-block';
-            } else {
-                pulseIndicator.style.display = 'none';
-            }
-        });
-    </script>
+      const normalized = message.toLowerCase();
+      if (normalized.includes('gravando') || normalized.includes('record')) {
+        pulseIndicator.style.display = 'inline-block';
+      } else {
+        pulseIndicator.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>

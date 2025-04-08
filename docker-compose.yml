@@ -11,6 +11,21 @@ services:
       - "15672:15672"
     networks:
       - app-network
+
+  falcon-ollama:
+    image: ollama/ollama
+    container_name: falcon-ollama
+    tty: true
+    pull_policy: always
+    ports:
+      - "11434:11434"
+    networks:
+      - app-network
+    restart: unless-stopped
+    entrypoint: [ "/bin/sh", "/falcon-ollama/run_ollama.sh" ]
+    volumes:
+      - ./ollama:/falcon-ollama
+      - ./ollama/root:/root
 networks:
   app-network:
     driver: bridge
