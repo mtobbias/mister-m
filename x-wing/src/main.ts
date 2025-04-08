@@ -1,4 +1,4 @@
-import {app, BrowserWindow, session, ipcMain} from 'electron';
+import { app, BrowserWindow, session, ipcMain, screen } from 'electron';
 import path from 'path';
 import amqp from 'amqplib';
 import dotenv from 'dotenv';
@@ -6,9 +6,11 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 let mainWindow: BrowserWindow | null = null;
+let audioWindow: BrowserWindow | null = null;
 
 const APP_NAME = 'x-wing';
-const QUEUE_FALCON_X_WING= 'QUEUE_FALCON_X_WING';
+const QUEUE_FALCON_X_WING = 'QUEUE_FALCON_X_WING';
+const QUEUE_FALCON_X_WING_AUDIO = 'QUEUE_FALCON_X_WING_AUDIO';
 const QUEUE_FALCON_AUDIO = 'QUEUE_FALCON_AUDIO';
 const QUEUE_FALCON_ASK = 'QUEUE_FALCON_ASK';
 const QUEUE_FALCON_SCREEN = 'QUEUE_FALCON_SCREEN';
@@ -20,14 +22,15 @@ export const EVENTS = {
     STOP_RECORD: 'stop-record',
     PRINT_SCREEN: 'print-screen',
     USER_TEXT_INPUT: 'user-text-input',
-    NEW_MESSAGE: 'new-message'
+    NEW_MESSAGE: 'new-message',
+    NEW_MESSAGE_AUDIO: 'new-message-audio'
 };
 
 async function startRabbitMQListener(): Promise<void> {
     try {
         const connection = await amqp.connect(RABBITMQ_URI);
         const channel = await connection.createChannel();
-        await channel.assertQueue(QUEUE_FALCON_X_WING, {durable: true});
+        await channel.assertQueue(QUEUE_FALCON_X_WING, { durable: true });
         console.log(`[${APP_NAME}] 🎧 Listening on queue: ${QUEUE_FALCON_X_WING}`);
 
         channel.consume(QUEUE_FALCON_X_WING, (msg) => {
@@ -37,7 +40,16 @@ async function startRabbitMQListener(): Promise<void> {
                 if (mainWindow?.webContents) {
                     mainWindow.webContents.send(EVENTS.NEW_MESSAGE, messageContent);
                 }
-
+                channel.ack(msg);
+            }
+        });
+        channel.consume(QUEUE_FALCON_X_WING_AUDIO, (msg) => {
+            if (msg !== null) {
+                const messageContent = msg.content.toString();
+                console.log(`[${APP_NAME}] 📩 Message received audio: ${messageContent}`);
+                if (audioWindow?.webContents) {
+                    audioWindow.webContents.send(EVENTS.NEW_MESSAGE_AUDIO, messageContent);
+                }
                 channel.ack(msg);
             }
         });
@@ -46,9 +58,8 @@ async function startRabbitMQListener(): Promise<void> {
     }
 }
 
-function createWindow(): void {
-    const {width: screenWidth} = require('electron').screen.getPrimaryDisplay().workAreaSize;
-
+function createMainWindow(): void {
+    const { width: screenWidth } = screen.getPrimaryDisplay().workAreaSize;
     const windowWidth = 600;
     const windowHeight = 400;
 
@@ -73,16 +84,50 @@ function createWindow(): void {
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
     session.defaultSession.webRequest.onBeforeRequest(
-        {urls: ['*://*/*']},
+        { urls: ['*://*/*'] },
         (details, callback) => {
-            callback(details.url.includes('webrtc') ? {cancel: true} : {});
+            callback(details.url.includes('webrtc') ? { cancel: true } : {});
         }
     );
 
     mainWindow.once('ready-to-show', () => {
         mainWindow?.show();
-        console.log(`[${APP_NAME}] 🚀 Window is ready.`);
-        startRabbitMQListener();
+        console.log(`[${APP_NAME}] 🚀 Main window ready.`);
+    });
+}
+
+function createAudioWindow(): void {
+    const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
+    audioWindow = new BrowserWindow({
+        width: screenWidth,
+        height: 200,
+        x: 0,
+        y: screenHeight,
+        alwaysOnTop: true,
+        frame: false,
+        skipTaskbar: true,
+        transparent: true,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js'),
+            allowDisplayingInsecureContent: false,
+            nodeIntegration: false,
+            contextIsolation: true,
+            devTools: false,
+        },
+    });
+
+    audioWindow.loadFile(path.join(__dirname, 'overlay.html'));
+
+    session.defaultSession.webRequest.onBeforeRequest(
+        { urls: ['*://*/*'] },
+        (details, callback) => {
+            callback(details.url.includes('webrtc') ? { cancel: true } : {});
+        }
+    );
+
+    audioWindow.once('ready-to-show', () => {
+        audioWindow?.show();
+        console.log(`[${APP_NAME}] 🔊 Audio overlay ready.`);
     });
 }
 
@@ -90,7 +135,7 @@ const sendRabbitMessage = async (queueName: string, message: string) => {
     try {
         const connection = await amqp.connect(RABBITMQ_URI);
         const channel = await connection.createChannel();
-        await channel.assertQueue(queueName, {durable: true});
+        await channel.assertQueue(queueName, { durable: true });
         channel.sendToQueue(queueName, Buffer.from(message));
         await channel.close();
         await connection.close();
@@ -106,15 +151,18 @@ const sendRabbit = async (message: string) => {
 
 app.whenReady().then(() => {
     console.log(`[${APP_NAME}] ✅ Application started.`);
-    createWindow();
+    createAudioWindow();
+    createMainWindow();
+    startRabbitMQListener();
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
-            createWindow();
+            createAudioWindow();
+           createMainWindow();
+            
         }
     });
 });
-
 
 ipcMain.on(EVENTS.NEW_MESSAGE, (event, arg) => {
     console.log(`[${APP_NAME}] 💬 Renderer says: ${arg}`);
@@ -129,11 +177,13 @@ ipcMain.on(EVENTS.CLOSE_APP, () => {
 ipcMain.on(EVENTS.START_RECORD, () => {
     console.log(`[${APP_NAME}] 🎙️ Sending START_RECORD command.`);
     sendRabbit('START_RECORD');
+    audioWindow?.webContents.send(EVENTS.NEW_MESSAGE_AUDIO, '🎙️ Gravando...');
 });
 
 ipcMain.on(EVENTS.STOP_RECORD, () => {
     console.log(`[${APP_NAME}] 🛑 Sending STOP_RECORD command.`);
     sendRabbit('STOP_RECORD');
+    audioWindow?.webContents.send(EVENTS.NEW_MESSAGE_AUDIO, '⏹️ Parado');
 });
 
 ipcMain.on(EVENTS.PRINT_SCREEN, () => {

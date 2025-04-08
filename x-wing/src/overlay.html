@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Audio Overlay</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --bg: rgba(30, 30, 30, 0.85);
+            --text: #ffffff;
+            --accent: #10a37f;
+            --recording: #e74c3c;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .overlay-container {
+            background: var(--bg);
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .pulse {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--recording);
+            animation: pulseAnim 1.2s ease-in-out infinite;
+        }
+
+        @keyframes pulseAnim {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.6); opacity: 0.6; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .text {
+            font-size: 15px;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay-container">
+        <div id="pulse-indicator" class="pulse" style="display: none;"></div>
+        <div class="text" id="audio-text">Aguardando...</div>
+    </div>
+
+    <script>
+        const textElement = document.getElementById('audio-text');
+        const pulseIndicator = document.getElementById('pulse-indicator');
+
+        window.electronAPI.onNewMessageAudio((message) => {
+            textElement.textContent = message;
+
+            if (message.toLowerCase().includes('gravando') || message.toLowerCase().includes('record')) {
+                pulseIndicator.style.display = 'inline-block';
+            } else {
+                pulseIndicator.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
